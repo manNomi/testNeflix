@@ -18,6 +18,6 @@ class Video:
             #Join
 
     def back(self):
-        self.ui.stackedWidget.setCurrentIndex(0)
+        self.ui.stackedWidget.setCurrentIndex(3)
 
 #영상재생 thread는 video에서 할것 

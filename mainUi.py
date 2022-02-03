@@ -2,11 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5 import QtWidgets
 import sys
-
+import data
 
 class Ui:
 
     def __init__(self):
+        self.db=data.Database()
+
+
         self.MainWindow=QtWidgets.QMainWindow()
         self.MainWindow.setGeometry(800,60,1200,900)
         self.MainWindow.setMinimumSize(1200,900)
@@ -348,7 +351,7 @@ class Ui:
         self.groupBox.setLayout(self.verticalLayout)
         self.scrollArea.setWidget(self.groupBox)
 
-
+##############
         valueLogoText=["MUSIC","SPORT","GAME","LOL","INSTAR"]
         image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
         self.mainLogoListBtn=[]
@@ -371,7 +374,7 @@ class Ui:
                 self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.FieldRole,valueLogo)
                 count+=1
             self.mainLogoListBtn.append(valueLogo)
-        
+#####################        
 
         self.playListBack=QtWidgets.QToolButton(self.PageplayList)
         self.playListBack.setGeometry(850,50,220,80)
@@ -487,24 +490,6 @@ class Ui:
         self.videoPlay.setFont(font)
         self.videoPlay.setText("playVideo")
 
-        playVideoBtnXY=[]
-        for index in range (0,4):
-            playVideoBtnXY.append([250+130*index,100,100,40])
-        playVideoBtnText=["search","update","insert","delete"]
-        self.playVideoBtnList=[]
-        for index in range(0,len(playListBtnXY)):
-            playVideoBtn=QtWidgets.QToolButton(self.PageVideo)
-            playVideoBtn.setGeometry(playListBtnXY[index][0],playListBtnXY[index][1],playListBtnXY[index][2],playListBtnXY[index][3])
-            font = QtGui.QFont()
-            playVideoBtn.setStyleSheet("background-color: red;color:white")
-            font.setFamily("Bebas Neue")
-            font.setPointSize(18)
-            playVideoBtn.setFont(font)
-            playVideoBtn.setText(playVideoBtnText[index])
-            playVideoBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-            self.playVideoBtnList.append(playVideoBtn)
-
-
         self.stackedWidget.addWidget(self.PageLogin)
         self.stackedWidget.addWidget(self.PageJoin)
         self.stackedWidget.addWidget(self.PageFind)
@@ -515,7 +500,6 @@ class Ui:
         self.MainWindow.setCentralWidget(self.centralwidget)
 
         self.MainWindow.show()
-
 
     def dialogCheck(self,Dialog,text):
         Dialog.setObjectName("Dialog")
@@ -530,15 +514,16 @@ class Ui:
         self.dialogLabel.setStyleSheet("color : red;")
         self.dialogLabel.setObjectName("label")
         self.dialogLabel.setText(text)
-        self.dialogCheck=QtWidgets.QToolButton(Dialog)
-        self.dialogCheck.setGeometry(215,200,120,60)
+
+        self.dialogCheckbtn=QtWidgets.QToolButton(Dialog)
+        self.dialogCheckbtn.setGeometry(215,200,120,60)
         font = QtGui.QFont()
-        self.dialogCheck.setStyleSheet("background-color: red;color:white")
+        self.dialogCheckbtn.setStyleSheet("background-color: red;color:white")
         font.setFamily("Bebas Neue")
         font.setPointSize(18)
-        self.dialogCheck.setFont(font)
-        self.dialogCheck.setText("check")
-        self.dialogCheck.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.dialogCheckbtn.setFont(font)
+        self.dialogCheckbtn.setText("check")
+        self.dialogCheckbtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def dialogYesNo(self,Dialog,text):
@@ -554,18 +539,19 @@ class Ui:
         self.dialogLabel.setStyleSheet("color : red;")
         self.dialogLabel.setObjectName("label")
         self.dialogLabel.setText(text)
-        self.dialogYesNo=[]
+        self.dialogYesNoBtn=[]
         dialogText=["yes","no"]
         for index in range(0,2):
-            self.dialogYesNo=QtWidgets.QToolButton(Dialog)
-            self.dialogYesNo.setGeometry(155+index*120,200,120,60)
+            dialogYesNoBtn=QtWidgets.QToolButton(Dialog)
+            dialogYesNoBtn.setGeometry(155+index*120,200,120,60)
             font = QtGui.QFont()
-            self.dialogYesNo.setStyleSheet("background-color: red;color:white")
+            dialogYesNoBtn.setStyleSheet("background-color: red;color:white")
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
-            self.dialogYesNo.setFont(font)
-            self.dialogYesNo.setText(dialogText[index])
-            self.dialogYesNo.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            dialogYesNoBtn.setFont(font)
+            dialogYesNoBtn.setText(dialogText[index])
+            dialogYesNoBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.dialogYesNoBtn.append(dialogYesNoBtn)
 
     def dialogPlayList(self,Dialog,text):
         Dialog.setObjectName("Dialog")
@@ -573,6 +559,7 @@ class Ui:
         Dialog.setStyleSheet("background-color : black;")
         self.dialogLabel = QtWidgets.QLabel(Dialog)
         self.dialogLabel.setGeometry(25, 30, 100, 50)
+        
         font = QtGui.QFont()
         font.setFamily("Bebas Neue")
         font.setPointSize(18)
@@ -580,14 +567,17 @@ class Ui:
         self.dialogLabel.setStyleSheet("color : white;")
         self.dialogLabel.setObjectName("label")
         self.dialogLabel.setText("playlist")
+
         scrollArea = QtWidgets.QScrollArea(Dialog)
         scrollArea.setGeometry(100,150,900,600)
         scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         scrollArea.setWidgetResizable(True)
         scrollArea.setObjectName("scrollArea3")
+
         scrollAreaWidgetContents = QtWidgets.QWidget()
         scrollAreaWidgetContents.setGeometry(0, 0, 188, 119)
         scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents2")
+
         groupBox = QtWidgets.QGroupBox(scrollAreaWidgetContents)
         groupBox.setGeometry(0, 10, 181, 81)
         groupBox.setObjectName("groupBox")
@@ -600,6 +590,7 @@ class Ui:
         verticalLayout.setVerticalSpacing(100)
         groupBox.setLayout(verticalLayout)
         scrollArea.setWidget(groupBox)
+
         valueLogoText=["MUSIC","SPORT","GAME","LOL","INSTAR","next","idol"]
         self.qPixmapVar = QPixmap() 
         count=0
@@ -614,24 +605,26 @@ class Ui:
             value.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             verticalLayout.setWidget(count,QtWidgets.QFormLayout.LabelRole,value)
             count+=1
-        btnText=["delete","back"]
+
+        btnText=[text,"back"]
+        self.Listcheckbtn=[]
         for index in range(0,len(btnText)):
-            self.dialogCheck=QtWidgets.QToolButton(Dialog)
-            self.dialogCheck.setGeometry(1040,700-(index*200),120,60)
+            isertCheckbtn=QtWidgets.QToolButton(Dialog)
+            isertCheckbtn.setGeometry(1040,700-(index*200),120,60)
             font = QtGui.QFont()
-            self.dialogCheck.setStyleSheet("background-color: red;color:white")
+            isertCheckbtn.setStyleSheet("background-color: red;color:white")
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
-            self.dialogCheck.setFont(font)
-            self.dialogCheck.setText("delete")
-            self.dialogCheck.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            isertCheckbtn.setFont(font)
+            isertCheckbtn.setText(btnText[index])
+            isertCheckbtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             QtCore.QMetaObject.connectSlotsByName(Dialog)
+            self.Listcheckbtn.append(isertCheckbtn)
 
     def dialogCheckEdit(self,Dialog,text):
         Dialog.setObjectName("Dialog")
         Dialog.resize(550, 333)
         Dialog.setStyleSheet("background-color : black;")
-
         self.dialogLabel = QtWidgets.QLabel(Dialog)
         self.dialogLabel.setGeometry(80, -50, 600, 300)
         font = QtGui.QFont()
@@ -642,28 +635,54 @@ class Ui:
         self.dialogLabel.setObjectName("label")
         self.dialogLabel.setText(text)
 
-        dialogText = QtWidgets.QTextEdit(Dialog)
-        dialogText.setGeometry(80, 150, 400, 50)
+        self.dialogText = QtWidgets.QLineEdit(Dialog)
+        self.dialogText.setGeometry(80, 150, 400, 50)
         font = QtGui.QFont()
         font.setFamily("Consolas")
         font.setPointSize(12)
-        dialogText.setFont(font)
-        dialogText.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
-        dialogText.setObjectName("label")
+        self.dialogText.setFont(font)
+        self.dialogText.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
+        self.dialogText.setObjectName("label")
  
-        self.dialogCheck=QtWidgets.QToolButton(Dialog)
-        self.dialogCheck.setGeometry(215,280,120,60)
+        self.dialogCheckEditBtn=QtWidgets.QToolButton(Dialog)
+        self.dialogCheckEditBtn.setGeometry(215,280,120,60)
         font = QtGui.QFont()
-        self.dialogCheck.setStyleSheet("background-color: red;color:white")
+        self.dialogCheckEditBtn.setStyleSheet("background-color: red;color:white")
         font.setFamily("Bebas Neue")
         font.setPointSize(18)
-        self.dialogCheck.setFont(font)
-        self.dialogCheck.setText("check")
-        self.dialogCheck.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.dialogCheckEditBtn.setFont(font)
+        self.dialogCheckEditBtn.setText("check")
+        self.dialogCheckEditBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
 # self.ui.dialog(self.Dialog,"Congratulations. You succeeded in signing up")
 #             self.Dialog.show()
+
+    def playList(self,playlistData):
+        
+        valueLogoText=playlistData
+        image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
+        self.mainLogoListBtn=[]
+        self.qPixmapVar = QPixmap() 
+        count=0
+        for index in range(0,len(valueLogoText)):
+            font = QtGui.QFont()
+            font.setFamily("Bebas Neue")
+            font.setPointSize(18)
+            valueLogo=QtWidgets.QToolButton(self.verticalLayoutWidget)
+            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[0]+")")
+            valueLogo.setFont(font)
+            valueLogo.setText(valueLogoText[index])
+            valueLogo.setFixedWidth(484)
+            valueLogo.setFixedHeight(270)
+            valueLogo.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            if (index+2)%2==0:
+                self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.LabelRole,valueLogo)
+            else:
+                self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.FieldRole,valueLogo)
+                count+=1
+            self.mainLogoListBtn.append(valueLogo)
+
 
 
 if __name__=="__main__":
