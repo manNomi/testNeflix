@@ -12,8 +12,10 @@ class PlayList:
         self.dialog=QtWidgets.QDialog()
         self.dialog2=QtWidgets.QDialog()
         self.dialog3=QtWidgets.QDialog()
+        self.dialog4=QtWidgets.QDialog()
         self.id=None
         self.playListText=[]
+        self.playListClick()
 
     def receiveId(self,id):
         self.id=id        
@@ -44,6 +46,7 @@ class PlayList:
             self.db.insertData("playList",self.db.column2Value,listData,self.db.cursor2,self.db.connect2)
             self.dialog2.close()
             self.playListSet()
+            self.playListClick()
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
@@ -58,7 +61,7 @@ class PlayList:
 
     def moveEvent(self,number):
         self.ui.stackedWidget.setCurrentIndex(4)
-        video=VideoPage.Video(self.ui)
+        video=VideoPage.Video(self.ui,self.id)
         
     def backEvent(self):
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -118,6 +121,8 @@ class PlayList:
             self.dialog2.close()
             self.dialog.close()
             self.playListSet()
+            self.playListClick()
+
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
@@ -151,10 +156,10 @@ class PlayList:
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
             self.dialog2.exec()
         elif count==1:   
-            self.ui.dialogYesNo(self.dialog2,"delete?")
+            self.ui.dialogYesNo(self.dialog4,"delete?")
             self.ui.dialogYesNoBtn[0].clicked.connect(lambda event : self.deleteData(indexState))
-            self.ui.dialogYesNoBtn[1].clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogYesNoBtn[1].clicked.connect(lambda event : self.dialog4.close())
+            self.dialog4.exec()
 
 
     def deleteData(self,number):
@@ -165,4 +170,6 @@ class PlayList:
         self.dialog2.close()
         self.dialog.close()
         self.playListSet()
+        self.playListClick()
+
             # rdData 통해서 id 랑 입력된 text 로 시퀀스 찾아서 그 시퀀스 딜리트 

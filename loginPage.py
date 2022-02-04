@@ -36,6 +36,8 @@ class Login:
             self.ui.stackedWidget.setCurrentIndex(3)
             self.playList.receiveId(self.id)
             self.playList.playListSet()
+            self.playList.playListClick()
+
         else:
             self.ui.dialogCheck(self.dialog,"The ID and password are wrong")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
