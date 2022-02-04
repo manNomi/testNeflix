@@ -75,16 +75,16 @@ class Database:
         cursor.execute(sql)
         connect.commit()
 #----------------------------------------------------------------------------------------#
-    def updateData(self,table,pw,sequance,cursor):
-        value=pw
+# self.cursor.execute("UPDATE user SET pw=? WHERE id=? and pw=?;",newData)
+    def updateData(self,table,value,sequance,cursor,connect):
         sql="UPDATE "
         sql+=table+" SET "+""
-        sql+=str(value[0])+"="+str(value[1])
+        sql+=str(value[0])+"= '"+str(value[1])+"'"
         sql+=" WHERE "+sequance[0]+"="+str(sequance[1])
         sql+=";"
         print(sql)
         cursor.execute(sql)
-        self.connect.commit()
+        connect.commit()
 #----------------------------------------------------------------------------------------#
     def readData(self,table,colums,values,cursor):  
         userData=[colums,values]

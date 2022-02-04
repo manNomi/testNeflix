@@ -78,17 +78,50 @@ class PlayList:
     
 
 
-
     def updateList(self):
-        self.ui.dialogPlayList(self.dialog,"update")
+        self.ui.dialogPlayList(self.dialog,"update",self.playListText)
         self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog.close())
         self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.updateName())
         self.dialog.exec()
 
     def updateName(self):
-        self.ui.dialogCheckEdit(self.dialog2,"updateName")
-        self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.dialog2.close())
-        self.dialog2.exec()
+        state=[]
+        count=0
+        indexState=None
+        for index in range(0,len(self.ui.dialogListBox)):
+            state.append(self.ui.dialogListBox[index].isChecked())
+            if state[index]==True:
+                count+=1
+                indexState=index
+        if count>=2 :
+            self.ui.dialogCheck(self.dialog2,"repeat input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
+            self.dialog2.exec()
+        elif count<=0 :
+            self.ui.dialogCheck(self.dialog2,"pls input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
+            self.dialog2.exec()
+        elif count==1:   
+            self.ui.dialogCheckEdit(self.dialog2,"update")
+            self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.updateData(indexState))
+            self.dialog2.exec()
+
+    def updateData(self,number):
+        listData=[self.id,self.ui.dialogText.text()]
+        checkPlayListRepeat=self.db.readData("playList",["id","playList"],listData,self.db.cursor2)
+        print(checkPlayListRepeat)
+        if len(checkPlayListRepeat)==0:
+            playList=self.ui.dialogListBox[number].text()
+            data=self.db.readData("playList",["id","playList"],[self.id,playList],self.db.cursor2)
+            updateData=["sequance",data[0][0]]
+            self.db.updateData("playList",["playList",self.ui.dialogText.text()],updateData,self.db.cursor2,self.db.connect2)
+            self.dialog2.close()
+            self.dialog.close()
+            self.playListSet()
+        else:
+            self.ui.dialogCheck(self.dialog3,"repeat")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
 
 
 
