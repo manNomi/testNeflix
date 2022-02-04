@@ -558,7 +558,7 @@ class Ui:
             dialogYesNoBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.dialogYesNoBtn.append(dialogYesNoBtn)
 
-    def dialogPlayList(self,Dialog,text):
+    def dialogPlayList(self,Dialog,text,List):
         Dialog.setObjectName("Dialog")
         Dialog.resize(1200,900)
         Dialog.setStyleSheet("background-color : black;")
@@ -596,8 +596,8 @@ class Ui:
         groupBox.setLayout(verticalLayout)
         scrollArea.setWidget(groupBox)
 
-        valueLogoText=["MUSIC","SPORT","GAME","LOL","INSTAR","next","idol"]
-        self.qPixmapVar = QPixmap() 
+        valueLogoText=List
+        self.dialogListBox=[]
         count=0
         for index in range(0,len(valueLogoText)):
             font = QtGui.QFont()
@@ -609,6 +609,7 @@ class Ui:
             value.setText(valueLogoText[index])
             value.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             verticalLayout.setWidget(count,QtWidgets.QFormLayout.LabelRole,value)
+            self.dialogListBox.append(value)
             count+=1
 
         btnText=[text,"back"]
@@ -722,7 +723,6 @@ class Ui:
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
     Main=Ui()
- 
 
     dialog=QtWidgets.QDialog()
     Main.dialogCheckEdit(dialog,"Do you really want to delete it?")

@@ -13,19 +13,16 @@ class PlayList:
         self.dialog2=QtWidgets.QDialog()
         self.dialog3=QtWidgets.QDialog()
         self.id=None
+        self.playListText=[]
 
     def receiveId(self,id):
         self.id=id        
         self.playListClick()
 
-
     def playListClick(self):
         # search update insert delete
-        
         for index in range(0,len(self.ui.mainLogoListBtn)):
            self.ui.mainLogoListBtn[index].clicked.connect(lambda event,value=index : self.moveEvent(value))
-
-
 
     def playListEvent(self,number):
         if number==0:#search
@@ -38,7 +35,6 @@ class PlayList:
             self.dialog2.exec()
         else:
             self.deleteList()
-
 
     def insertPlayList(self):
         listData=[self.id,self.ui.dialogText.text()]
@@ -55,12 +51,10 @@ class PlayList:
 
     def playListSet(self):
         listData=self.db.readData("playList",["id"],[self.id],self.db.cursor2)
-        playListText=[]
+        self.playListText=[]
         for index in range (0,len(listData)):
-            playListText.append(listData[index][2])
-        self.ui.playList(playListText)
-
-
+            self.playListText.append(listData[index][2])
+        self.ui.playList(self.playListText)
 
     def moveEvent(self,number):
         self.ui.stackedWidget.setCurrentIndex(4)
@@ -100,12 +94,42 @@ class PlayList:
 
 
     def deleteList(self):
-        self.ui.dialogPlayList(self.dialog,"delete")
+        self.ui.dialogPlayList(self.dialog,"delete",self.playListText)
         self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog.close())
-        self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.deleteName())
+        self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.deleteEvent())
         self.dialog.exec()
+        
 
-    def deleteName(self):
-        self.ui.dialogYesNo(self.dialog2,"delete?")
-        self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.dialog2.close())
-        self.dialog2.exec()
+    def deleteEvent(self):
+        state=[]
+        count=0
+        indexState=None
+        for index in range(0,len(self.ui.dialogListBox)):
+            state.append(self.ui.dialogListBox[index].isChecked())
+            if state[index]==True:
+                count+=1
+                indexState=index
+        if count>=2 :
+            self.ui.dialogCheck(self.dialog2,"repeat input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
+            self.dialog2.exec()
+        elif count<=0 :
+            self.ui.dialogCheck(self.dialog2,"pls input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
+            self.dialog2.exec()
+        elif count==1:   
+            self.ui.dialogYesNo(self.dialog2,"delete?")
+            self.ui.dialogYesNoBtn[0].clicked.connect(lambda event : self.deleteData(indexState))
+            self.ui.dialogYesNoBtn[1].clicked.connect(lambda event : self.dialog2.close())
+            self.dialog2.exec()
+
+
+    def deleteData(self,number):
+        playList=self.ui.dialogListBox[number].text()
+        data=self.db.readData("playList",["id","playList"],[self.id,playList],self.db.cursor2)
+        deleteData=["sequance",data[0][0]]
+        self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
+        self.dialog2.close()
+        self.dialog.close()
+        self.playListSet()
+            # rdData 통해서 id 랑 입력된 text 로 시퀀스 찾아서 그 시퀀스 딜리트 

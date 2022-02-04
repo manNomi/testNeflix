@@ -18,11 +18,9 @@ class Login:
         self.find=findPage.Find(self.ui)
         self.playList=playListPage.PlayList(self.ui)
 
-
     def loginClick(self):  # initEvent 
         for index in range(0,len(self.ui.loginBtnList)):
             self.ui.loginBtnList[index].clicked.connect(lambda event,value=index : self.loginEvent(value))
-
 
     def loginEvent(self,number):
         if number==0:
@@ -32,19 +30,16 @@ class Login:
         else:
             self.ui.stackedWidget.setCurrentIndex(2)
 
-
     def loginCheckEvent(self):
         self.id,self.pw=self.ui.loginTextList[0].text(),self.ui.loginTextList[1].text()
         if  len(self.db.readData("user",["id","pw"],[self.id,self.pw],self.db.cursor1))!=0:
             self.ui.stackedWidget.setCurrentIndex(3)
             self.playList.receiveId(self.id)
             self.playList.playListSet()
-
         else:
             self.ui.dialogCheck(self.dialog,"The ID and password are wrong")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
             self.dialog.exec()
-
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
