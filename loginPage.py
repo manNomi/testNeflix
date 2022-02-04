@@ -14,6 +14,9 @@ class Login:
         self.ui=mainUi.Ui()
         self.loginClick()
         self.dialog=QtWidgets.QDialog()
+        self.join=joinPage.Join(self.ui)
+        self.find=findPage.Find(self.ui)
+        self.playList=playListPage.PlayList(self.ui)
 
 
     def loginClick(self):  # initEvent 
@@ -26,23 +29,23 @@ class Login:
             self.loginCheckEvent()
         elif number==1:
             self.ui.stackedWidget.setCurrentIndex(1)
-            self.join=joinPage.Join(self.ui)
         else:
             self.ui.stackedWidget.setCurrentIndex(2)
-            self.find=findPage.Find(self.ui)
-            
-    
+
+
     def loginCheckEvent(self):
         self.id,self.pw=self.ui.loginTextList[0].text(),self.ui.loginTextList[1].text()
         if  len(self.db.readData("user",["id","pw"],[self.id,self.pw],self.db.cursor1))!=0:
             self.ui.stackedWidget.setCurrentIndex(3)
-            self.playList=playListPage.PlayList(self.ui,self.id)
+            self.playList.receiveId(self.id)
+            self.playList.playListSet()
+
         else:
             self.ui.dialogCheck(self.dialog,"The ID and password are wrong")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
             self.dialog.exec()
 
-    
+
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
     start=Login()

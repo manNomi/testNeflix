@@ -3,28 +3,29 @@ from PyQt5 import QtWidgets
 import data
 
 class PlayList:
-    def __init__(self,Ui,id):
+    def __init__(self,Ui):
         self.ui=Ui
         self.db=data.Database()
-        self.id=id
-        self.playListClick()
+        self.ui.playListBack.clicked.connect(self.backEvent)
+        for index in range(0,len(self.ui.playListBtnList)):
+            self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
         self.dialog=QtWidgets.QDialog()
         self.dialog2=QtWidgets.QDialog()
         self.dialog3=QtWidgets.QDialog()
+        self.id=None
 
-
-        
+    def receiveId(self,id):
+        self.id=id        
+        self.playListClick()
 
 
     def playListClick(self):
         # search update insert delete
-        for index in range(0,len(self.ui.playListBtnList)):
-            self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
-
+        
         for index in range(0,len(self.ui.mainLogoListBtn)):
            self.ui.mainLogoListBtn[index].clicked.connect(lambda event,value=index : self.moveEvent(value))
 
-        self.ui.playListBack.clicked.connect(self.backEvent)
+
 
     def playListEvent(self,number):
         if number==0:#search
@@ -37,6 +38,7 @@ class PlayList:
             self.dialog2.exec()
         else:
             self.deleteList()
+
 
     def insertPlayList(self):
         listData=[self.id,self.ui.dialogText.text()]

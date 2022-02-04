@@ -324,6 +324,10 @@ class Ui:
             playListLogo.setText(playListLogoText[index])
 
 
+        
+
+##############
+     
         self.scrollArea = QtWidgets.QScrollArea(self.PageplayList)
         self.scrollArea.setGeometry(80,150,1050,730)
         self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
@@ -350,9 +354,9 @@ class Ui:
 
         self.groupBox.setLayout(self.verticalLayout)
         self.scrollArea.setWidget(self.groupBox)
+        
 
-##############
-        valueLogoText=["MUSIC","SPORT","GAME","LOL","INSTAR"]
+        valueLogoText=[]
         image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
         self.mainLogoListBtn=[]
         self.qPixmapVar = QPixmap() 
@@ -362,7 +366,7 @@ class Ui:
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
             valueLogo=QtWidgets.QToolButton(self.verticalLayoutWidget)
-            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[index]+")")
+            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[0]+")")
             valueLogo.setFont(font)
             valueLogo.setText(valueLogoText[index])
             valueLogo.setFixedWidth(484)
@@ -374,6 +378,7 @@ class Ui:
                 self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.FieldRole,valueLogo)
                 count+=1
             self.mainLogoListBtn.append(valueLogo)
+        
 #####################        
 
         self.playListBack=QtWidgets.QToolButton(self.PageplayList)
@@ -659,12 +664,40 @@ class Ui:
 #             self.Dialog.show()
 
     def playList(self,playlistData):
-        
+
+
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(0, 0, 188, 119)
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+
+        self.groupBox = QtWidgets.QGroupBox(self.scrollAreaWidgetContents)
+        self.groupBox.setGeometry(0, 10, 181, 81)
+        self.groupBox.setObjectName("groupBox")
+
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.groupBox)
+        self.verticalLayoutWidget.setGeometry(20, 20, 980,680)
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+
+        self.verticalLayout = QtWidgets.QFormLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout.setSpacing(50)
+        self.verticalLayout.setVerticalSpacing(100)
+
+        self.groupBox.setLayout(self.verticalLayout)
+        self.scrollArea.setWidget(self.groupBox)
+
+
         valueLogoText=playlistData
+
         image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
         self.mainLogoListBtn=[]
-        self.qPixmapVar = QPixmap() 
+        self.qPixmapVar = QPixmap()
         count=0
+        self.mainLogoListBtn.clear()
+        
+        print(self.mainLogoListBtn)
+        print("값:"+str(playlistData))
         for index in range(0,len(valueLogoText)):
             font = QtGui.QFont()
             font.setFamily("Bebas Neue")
@@ -682,6 +715,7 @@ class Ui:
                 self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.FieldRole,valueLogo)
                 count+=1
             self.mainLogoListBtn.append(valueLogo)
+        print(self.mainLogoListBtn)
 
 
 
