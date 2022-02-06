@@ -8,14 +8,15 @@ import joinPage
 import playListPage
 import data
 import loadingPage
+import keyboardEnter
 
 class Login:
     def __init__(self):
+        self.key=keyboardEnter.KeyEvent()
         self.db=data.Database()
         self.ui=mainUi.Ui()
         self.load=loadingPage.Loading(self.ui)
         self.load.setMovie(0)
-        self.loadTime=loadingPage.Loadingtime()
         self.loginClick()
         self.dialog=QtWidgets.QDialog()
         self.join=joinPage.Join(self.ui)

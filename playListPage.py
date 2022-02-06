@@ -1,10 +1,13 @@
+from json import load
 import VideoPage
 from PyQt5 import QtWidgets
 import data
+import loadingPage
 
 class PlayList:
     def __init__(self,Ui):
         self.ui=Ui
+        self.load=loadingPage.Loading(self.ui)
         self.db=data.Database()
         self.ui.playListBack.clicked.connect(self.backEvent)
         for index in range(0,len(self.ui.playListBtnList)):
@@ -61,7 +64,7 @@ class PlayList:
         self.ui.playList(self.playListText)
 
     def moveEvent(self,number):
-        self.ui.stackedWidget.setCurrentIndex(4)
+        self.load.setMovie(4)
         video=VideoPage.Video(self.ui,self.id,self.playListText[number])
         
     def backEvent(self):

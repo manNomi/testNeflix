@@ -36,6 +36,8 @@ class Ui:
         self.loginTextList=[]
         for index in range(0,len(loginTextXY)):
             loginText=QtWidgets.QLineEdit(self.PageLogin)
+            if index==1:
+                loginText.setEchoMode(QtWidgets.QLineEdit.Password)
             loginText.setGeometry(loginTextXY[index][0],loginTextXY[index][1],loginTextXY[index][2],loginTextXY[index][3])
             loginText.setStyleSheet("color:white;")
             font = QtGui.QFont()
@@ -140,7 +142,7 @@ class Ui:
         joinIncorrectXY=[]
         for index in range(0,5):
             joinIncorrectXY.append([600,130+(140*index),150,45])
-        mainLogoList=[]
+        self.joinCheckText=[]
         for index in range(0,5):
             IncorrectLogo=QtWidgets.QLabel(self.PageJoin)
             IncorrectLogo.setGeometry(joinIncorrectXY[index][0],joinIncorrectXY[index][1],joinIncorrectXY[index][2],joinIncorrectXY[index][3])
@@ -150,6 +152,7 @@ class Ui:
             IncorrectLogo.setStyleSheet("color : #FFC000;")
             IncorrectLogo.setFont(font)
             IncorrectLogo.setText("incorrect")
+            self.joinCheckText.append(IncorrectLogo)
 
         
         joinBtnXY=[[850,560, 220,80],[850,720,220,80]]
