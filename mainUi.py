@@ -495,13 +495,24 @@ class Ui:
         self.videoPlay.setFont(font)
         self.videoPlay.setText("playVideo")
 
+#############################################################################################################
+        self.PageLoading = QtWidgets.QWidget()
+        self.PageLoading.setObjectName("PageLoading")
+        self.loginLogo=QtWidgets.QLabel(self.PageLoading)
+        self.loginLogo.setGeometry(100,0,1200,900)
+        self.loginLogo.setStyleSheet("background-color:black")
+
+
+###############################################################################################################
         self.stackedWidget.addWidget(self.PageLogin)
         self.stackedWidget.addWidget(self.PageJoin)
         self.stackedWidget.addWidget(self.PageFind)
         self.stackedWidget.addWidget(self.PageplayList)
         self.stackedWidget.addWidget(self.PageVideo)
+        self.stackedWidget.addWidget(self.PageLoading)
 
-        self.stackedWidget.setCurrentIndex(0)
+
+        self.stackedWidget.setCurrentIndex(5)
         self.MainWindow.setCentralWidget(self.centralwidget)
 
         self.MainWindow.show()

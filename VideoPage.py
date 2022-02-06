@@ -16,17 +16,13 @@ class Video:
     def videoEvent(self,number):
         if number==0:
             self.ui.stackedWidget.setCurrentIndex(0)
-            #Back
         else:
             pass
-            #Join
+            
 
     def back(self):
         self.ui.stackedWidget.setCurrentIndex(3)
        
-       
-      
-
     def playListSet(self):
         listData=self.db.readData("playVideo",["id","playList"],[self.id,self.playList],self.db.cursor3)
         self.playListText=[]

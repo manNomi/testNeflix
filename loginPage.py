@@ -7,16 +7,23 @@ import findPage
 import joinPage
 import playListPage
 import data
+import loadingPage
 
 class Login:
     def __init__(self):
         self.db=data.Database()
         self.ui=mainUi.Ui()
+        self.load=loadingPage.Loading(self.ui)
+        self.load.setMovie(0)
+        self.loadTime=loadingPage.Loadingtime()
         self.loginClick()
         self.dialog=QtWidgets.QDialog()
         self.join=joinPage.Join(self.ui)
         self.find=findPage.Find(self.ui)
         self.playList=playListPage.PlayList(self.ui)
+
+
+    
 
     def loginClick(self):  # initEvent 
         for index in range(0,len(self.ui.loginBtnList)):
