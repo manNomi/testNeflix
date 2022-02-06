@@ -456,7 +456,7 @@ class Ui:
         self.groupBox2.setLayout(self.verticalLayoutVideo)
         self.scrollArea2.setWidget(self.groupBox2)
 
-        valueLogoText2=["MUSIC","SPORT","GAME","LOL","INSTAR"]
+        valueLogoText2=[]
         image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
         self.videoBtn=[]
         self.qPixmapVar = QPixmap() 
@@ -720,6 +720,58 @@ class Ui:
                 count+=1
             self.mainLogoListBtn.append(valueLogo)
         print(self.mainLogoListBtn)
+
+    def playVideoSet(self,playlistData):
+        self.scrollAreaWidgetContents2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents2.setGeometry(0, 0, 188, 119)
+        self.scrollAreaWidgetContents2.setObjectName("scrollAreaWidgetContents2")
+
+        self.groupBox2 = QtWidgets.QGroupBox(self.scrollAreaWidgetContents2)
+        self.groupBox2.setGeometry(0, 10, 181, 81)
+        self.groupBox2.setObjectName("groupBox2")
+
+        self.verticalLayoutVideoWidget2 = QtWidgets.QWidget(self.groupBox2)
+        self.verticalLayoutVideoWidget2.setGeometry(20, 20, 980,680)
+        self.verticalLayoutVideoWidget2.setObjectName("verticalLayoutVideoWidget2")
+
+        self.verticalLayoutVideo2 = QtWidgets.QFormLayout(self.verticalLayoutVideoWidget2)
+        self.verticalLayoutVideo2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayoutVideo2.setObjectName("verticalLayoutVideo2")
+        self.verticalLayoutVideo2.setSpacing(10)
+        self.verticalLayoutVideo2.setVerticalSpacing(100)
+
+        self.groupBox2.setLayout(self.verticalLayoutVideo2)
+        self.scrollArea2.setWidget(self.groupBox2)
+
+        valueLogoText2=playlistData
+        
+        image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
+        self.videoBtn=[]
+        self.qPixmapVar = QPixmap()
+        count=0
+        self.videoBtn.clear()
+        
+        print(self.videoBtn)
+        print("값:"+str(playlistData))
+        for index in range(0,len(valueLogoText2)):
+            font = QtGui.QFont()
+            font.setFamily("Bebas Neue")
+            font.setPointSize(18)
+            valueLogo2=QtWidgets.QToolButton(self.verticalLayoutVideoWidget2)
+            valueLogo2.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[0]+")")
+            valueLogo2.setFont(font)
+            valueLogo2.setText(valueLogoText2[index])
+            valueLogo2.setFixedWidth(162)
+            valueLogo2.setFixedHeight(90)
+            valueLogo2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.verticalLayoutVideo2.setWidget(count,QtWidgets.QFormLayout.LabelRole,valueLogo2)
+            count+=1
+            self.videoBtn.append(valueLogo2)
+        print(self.videoBtn)
+
+
+
+
 
 
 

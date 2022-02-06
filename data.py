@@ -13,7 +13,7 @@ class Database:
 
         self.connect1=sqlite3.connect("src\curd.db")
         self.connect2=sqlite3.connect("src\playList.db")
-        self.connect3=sqlite3.connect("src\ video.db")
+        self.connect3=sqlite3.connect("src\playVideo.db")
 
         self.column1=['sequance','id','pw','Name','phone']
         self.column1Value=['id','pw','Name','phone']
@@ -23,18 +23,18 @@ class Database:
         self.column2Value=['id','playList']
         self.row2=['INTEGER PRIMARY KEY','TEXT','TEXT']
 
-        self.column3=['sequance','id','video']
-        self.column3Value=['id','video']
-        self.row3=['INTEGER PRIMARY KEY','TEXT','TEXT']
+        self.column3=['sequance','id','playList','video']
+        self.column3Value=['id','playList','video']
+        self.row3=['INTEGER PRIMARY KEY','TEXT','TEXT','TEXT']
 
 
         self.cursor1=self.connect1.cursor()
         self.cursor2=self.connect2.cursor()
-        self.cursor3=self.connect2.cursor()
+        self.cursor3=self.connect3.cursor()
 
         self.create("user",self.column1,self.row1,self.cursor1)
         self.create("playList",self.column2,self.row2,self.cursor2)
-        self.create("video",self.column2,self.row2,self.cursor3)
+        self.create("playVideo",self.column3,self.row3,self.cursor3)
 
 #----------------------------------------------------------------------------------------#
     def create(self,user,column,row,cursor):
