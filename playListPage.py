@@ -5,8 +5,9 @@ import data
 import loadingPage
 
 class PlayList:
-    def __init__(self,Ui):
+    def __init__(self,Ui,con):
         self.ui=Ui
+        self.con=con
         self.load=loadingPage.Loading(self.ui)
         self.db=data.Database()
         self.ui.playListBack.clicked.connect(self.backEvent)
@@ -69,6 +70,7 @@ class PlayList:
         
     def backEvent(self):
         self.ui.stackedWidget.setCurrentIndex(0)
+        self.con.setTextClear()
 
     def updateList(self):
         self.ui.dialogPlayList(self.dialog,"update",self.playListText)

@@ -3,14 +3,19 @@ from PyQt5.QtGui import *
 from PyQt5 import QtWidgets
 import sys
 import data
+from PyQt5.QtWidgets import QApplication, QWidget
 
 class Ui:
-
+    
     def __init__(self):
+      
         self.db=data.Database()
 
-
         self.MainWindow=QtWidgets.QMainWindow()
+        
+        self.MainWindow.setWindowTitle("NETFLIX")
+        self.MainWindow.setWindowIcon(QIcon("image/icon.png"))
+        
         self.MainWindow.setGeometry(800,60,1200,900)
         self.MainWindow.setMinimumSize(1200,900)
         self.MainWindow.setMaximumSize(1200,900)
@@ -141,17 +146,16 @@ class Ui:
 
         joinIncorrectXY=[]
         for index in range(0,5):
-            joinIncorrectXY.append([600,130+(140*index),150,45])
+            joinIncorrectXY.append([600,130+(140*index),450,45])
         self.joinCheckText=[]
         for index in range(0,5):
             IncorrectLogo=QtWidgets.QLabel(self.PageJoin)
             IncorrectLogo.setGeometry(joinIncorrectXY[index][0],joinIncorrectXY[index][1],joinIncorrectXY[index][2],joinIncorrectXY[index][3])
             font = QtGui.QFont()
             font.setFamily("Bebas Neue")
-            font.setPointSize(18)
+            font.setPointSize(10)
             IncorrectLogo.setStyleSheet("color : #FFC000;")
             IncorrectLogo.setFont(font)
-            IncorrectLogo.setText("incorrect")
             self.joinCheckText.append(IncorrectLogo)
 
         
@@ -782,9 +786,6 @@ class Ui:
             count+=1
             self.videoBtn.append(valueLogo2)
         print(self.videoBtn)
-
-
-
 
 
 

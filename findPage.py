@@ -1,8 +1,9 @@
 import data
 from PyQt5 import QtWidgets
 class Find:
-    def __init__(self,Ui):
+    def __init__(self,Ui,con):
         self.ui=Ui
+        self.con=con
         self.findClick()
         self.db=data.Database()
         self.dialog=QtWidgets.QDialog()
@@ -20,6 +21,7 @@ class Find:
             #find ID
         else:
             self.ui.stackedWidget.setCurrentIndex(0)
+            self.con.setTextClear()
 
     def findIdEvent(self):
         phone=self.ui.findTextID[0].text()

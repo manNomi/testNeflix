@@ -12,8 +12,8 @@ class Loading:
     def __init__(self,ui):
         self.ui=ui
         self.indexNum=0
-        self.timer =Loadingtime()
     def setMovie(self,num):
+        self.timer =Loadingtime()
         self.ui.stackedWidget.setCurrentIndex(5)
         self.indexNum=num
         self.movie = QMovie("image/넷플릭스.gif", QByteArray())
@@ -24,7 +24,7 @@ class Loading:
         self.timer.time.connect(self.setTime)
 
     def setTime(self,time):
-        if time==4:
+        if time==3:
             self.ui.stackedWidget.setCurrentIndex(self.indexNum)
 
 class Loadingtime(QThread):
@@ -40,7 +40,7 @@ class Loadingtime(QThread):
             print(self.num)
             self.num += 1
             time.sleep(1)
-            if self.num>5:
+            if self.num>4:
                 break
     
 
