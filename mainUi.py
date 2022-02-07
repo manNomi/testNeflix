@@ -37,7 +37,7 @@ class Ui:
             loginLine.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;")
             self.loginLineList.append(loginLine)
         
-        loginTextXY=[[230,250,600,70],[230,480,600,70]]
+        loginTextXY=[[230,250,700,70],[230,480,700,70]]
         self.loginTextList=[]
         for index in range(0,len(loginTextXY)):
             loginText=QtWidgets.QLineEdit(self.PageLogin)
@@ -70,14 +70,14 @@ class Ui:
             mainLogoList.append(loginLogo) 
 
         
-        loginBtnXY=[[235,660, 250, 70],[540,660,150,70],[740,660, 150,70]]
+        loginBtnXY=[[235,660, 220, 70],[510,660,220, 70],[780,660, 220, 70]]
         loginBtnText=["Login","JOIN","FIND "]
         self.loginBtnList=[]
         for index in range(0,len(loginBtnXY)):
             loginBtn=QtWidgets.QToolButton(self.PageLogin)
             loginBtn.setGeometry(loginBtnXY[index][0],loginBtnXY[index][1],loginBtnXY[index][2],loginBtnXY[index][3])
             font = QtGui.QFont()
-            loginBtn.setStyleSheet("background-color: red;color:white")
+            loginBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
             loginBtn.setFont(font)
@@ -166,7 +166,7 @@ class Ui:
             joinBtn=QtWidgets.QToolButton(self.PageJoin)
             joinBtn.setGeometry(joinBtnXY[index][0],joinBtnXY[index][1],joinBtnXY[index][2],joinBtnXY[index][3])
             font = QtGui.QFont()
-            joinBtn.setStyleSheet("background-color: red;color:white")
+            joinBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
             joinBtn.setFont(font)
@@ -229,7 +229,7 @@ class Ui:
                 findBtn = QtWidgets.QToolButton(self.findID)
             else:
                 findBtn = QtWidgets.QToolButton(self.PageFind)
-            findBtn.setStyleSheet("background-color: red;color: white;")
+            findBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
             findBtn.setGeometry(findBtnGeo[index][0],findBtnGeo[index][1],findBtnGeo[index][2],findBtnGeo[index][3])
             findBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             font = QtGui.QFont()
@@ -391,7 +391,7 @@ class Ui:
         self.playListBack=QtWidgets.QToolButton(self.PageplayList)
         self.playListBack.setGeometry(850,50,220,80)
         font = QtGui.QFont()
-        self.playListBack.setStyleSheet("background-color: red;color:white")
+        self.playListBack.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
         font.setFamily("Bebas Neue")
         font.setPointSize(18)
         self.playListBack.setFont(font)
@@ -407,7 +407,7 @@ class Ui:
             playListBtn=QtWidgets.QToolButton(self.PageplayList)
             playListBtn.setGeometry(playListBtnXY[index][0],playListBtnXY[index][1],playListBtnXY[index][2],playListBtnXY[index][3])
             font = QtGui.QFont()
-            playListBtn.setStyleSheet("background-color: red;color:white")
+            playListBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
             playListBtn.setFont(font)
@@ -486,7 +486,7 @@ class Ui:
         self.videoBack=QtWidgets.QToolButton(self.PageVideo)
         self.videoBack.setGeometry(850,50,220,80)
         font = QtGui.QFont()
-        self.videoBack.setStyleSheet("background-color: red;color:white")
+        self.videoBack.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
         font.setFamily("Bebas Neue")
         font.setPointSize(18)
         self.videoBack.setFont(font)
@@ -501,6 +501,36 @@ class Ui:
         font.setPointSize(18)
         self.videoPlay.setFont(font)
         self.videoPlay.setText("playVideo")
+
+        self.videoName=QtWidgets.QLabel(self.PageVideo)
+        self.videoName.setGeometry(130,750,570,80)
+        font = QtGui.QFont()
+        self.videoName.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+        font.setFamily("Bebas Neue")
+        font.setPointSize(18)
+        self.videoName.setFont(font)
+        self.videoName.setText("videoName")
+
+        self.videoBtn=[]
+        videoBtnText=["▶","■","〓"]
+        for index in range(0,len(videoBtnText)):
+            videoBtn=QtWidgets.QToolButton(self.PageVideo)
+            videoBtn.setGeometry(700+(50*index),750,50,80)
+            font = QtGui.QFont()
+            videoBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+            font.setPointSize(18)
+            videoBtn.setFont(font)
+            videoBtn.setText(videoBtnText[index])
+            videoBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+
+
+        self.horizontalSlider = QtWidgets.QSlider(self.PageVideo)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setGeometry(920, 800, 160, 22)
+        self.horizontalSlider.setStyleSheet("background-color:black")
+        self.horizontalSlider.setObjectName("horizontalSlider")
+
+
 
 #############################################################################################################
         self.PageLoading = QtWidgets.QWidget()
@@ -519,10 +549,12 @@ class Ui:
         self.stackedWidget.addWidget(self.PageLoading)
 
 
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(4)
         self.MainWindow.setCentralWidget(self.centralwidget)
 
         self.MainWindow.show()
+
+
 
     def dialogCheck(self,Dialog,text):
         Dialog.setObjectName("Dialog")

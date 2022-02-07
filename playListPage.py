@@ -11,6 +11,7 @@ class PlayList:
         self.load=loadingPage.Loading(self.ui)
         self.db=data.Database()
         self.ui.playListBack.clicked.connect(self.backEvent)
+        
         for index in range(0,len(self.ui.playListBtnList)):
             self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
         self.dialog=QtWidgets.QDialog()
@@ -66,8 +67,11 @@ class PlayList:
 
     def moveEvent(self,number):
         self.load.setMovie(4)
-        video=VideoPage.Video(self.ui,self.id,self.playListText[number])
-        
+        self.video=VideoPage.Video(self.ui,self.id,self.playListText[number])
+
+
+
+
     def backEvent(self):
         self.ui.stackedWidget.setCurrentIndex(0)
         self.con.setTextClear()

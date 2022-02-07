@@ -8,6 +8,7 @@ class Video:
         self.videoClick()
         self.playListSet()
 
+
     def videoClick(self):
         for index in range(0,len(self.ui.videoBtn)):
             self.ui.videoBtn[index].clicked.connect(lambda event,value=index : self.videoEvent(value))
