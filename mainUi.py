@@ -1,9 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
-from PyQt5 import QtWidgets
+from PyQt5 import *
 import sys
 import data
 from PyQt5.QtWidgets import QApplication, QWidget
+import urllib.request
+
 
 class Ui:
     
@@ -465,7 +467,7 @@ class Ui:
 
         valueLogoText2=[]
         image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
-        self.videoBtn=[]
+        self.videoListBtn=[]
         self.qPixmapVar = QPixmap() 
         count=0
         for index in range(0,len(valueLogoText2)):
@@ -480,7 +482,7 @@ class Ui:
             valueLogo2.setFixedHeight(90)
             valueLogo2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             self.verticalLayoutVideo.setWidget(count,QtWidgets.QFormLayout.LabelRole,valueLogo2)
-            self.videoBtn.append(valueLogo2)
+            self.videoListBtn.append(valueLogo2)
             count+=1
         
         self.videoBack=QtWidgets.QToolButton(self.PageVideo)
@@ -493,25 +495,22 @@ class Ui:
         self.videoBack.setText("BACK")
         self.videoBack.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         
-        self.videoPlay=QtWidgets.QLabel(self.PageVideo)
+        self.videoPlay=QtWidgets.QFrame(self.PageVideo)
         self.videoPlay.setGeometry(130,180,720,540)
-        font = QtGui.QFont()
         self.videoPlay.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
-        font.setFamily("Bebas Neue")
-        font.setPointSize(18)
-        self.videoPlay.setFont(font)
-        self.videoPlay.setText("playVideo")
+        
+  
 
         self.videoName=QtWidgets.QLabel(self.PageVideo)
         self.videoName.setGeometry(130,750,570,80)
         font = QtGui.QFont()
         self.videoName.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
         font.setFamily("Bebas Neue")
-        font.setPointSize(18)
+        font.setPointSize(10)
         self.videoName.setFont(font)
         self.videoName.setText("videoName")
 
-        self.videoBtn=[]
+        self.videoBtns=[]
         videoBtnText=["▶","■","〓"]
         for index in range(0,len(videoBtnText)):
             videoBtn=QtWidgets.QToolButton(self.PageVideo)
@@ -522,6 +521,8 @@ class Ui:
             videoBtn.setFont(font)
             videoBtn.setText(videoBtnText[index])
             videoBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+            self.videoBtns.append(videoBtn)
+
 
 
         self.horizontalSlider = QtWidgets.QSlider(self.PageVideo)
@@ -530,26 +531,52 @@ class Ui:
         self.horizontalSlider.setStyleSheet("background-color:black")
         self.horizontalSlider.setObjectName("horizontalSlider")
 
+       
+
+        self.videoDeleteBtn=QtWidgets.QToolButton(self.PageVideo)
+        self.videoDeleteBtn.setGeometry(250+390,100,100,40)
+        font = QtGui.QFont()
+        self.videoDeleteBtn.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+        font.setFamily("Bebas Neue")
+        font.setPointSize(18)
+        self.videoDeleteBtn.setFont(font)
+        self.videoDeleteBtn.setText("delete")
+        self.videoDeleteBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
 
 #############################################################################################################
         self.PageLoading = QtWidgets.QWidget()
         self.PageLoading.setObjectName("PageLoading")
-        self.loginLogo=QtWidgets.QLabel(self.PageLoading)
-        self.loginLogo.setGeometry(100,0,1200,900)
-        self.loginLogo.setStyleSheet("background-color:black")
+        self.loadingLogo=QtWidgets.QLabel(self.PageLoading)
+        self.loadingLogo.setGeometry(100,0,1200,900)
+        self.loadingLogo.setStyleSheet("background-color:black")
+
 
 
 ###############################################################################################################
+
+        self.PageDownloading = QtWidgets.QWidget()
+        self.PageDownloading.setObjectName("PageDownloading")
+        self.DownloadingLogo=QtWidgets.QLabel(self.PageDownloading)
+        self.DownloadingLogo.setGeometry(100,0,1200,900)
+        self.DownloadingLogo.setStyleSheet("background-color:white")
+        self.logoDown=QtWidgets.QLabel(self.PageDownloading)
+       
+
+
+###############################################################################################################
+
         self.stackedWidget.addWidget(self.PageLogin)
         self.stackedWidget.addWidget(self.PageJoin)
         self.stackedWidget.addWidget(self.PageFind)
         self.stackedWidget.addWidget(self.PageplayList)
         self.stackedWidget.addWidget(self.PageVideo)
         self.stackedWidget.addWidget(self.PageLoading)
+        self.stackedWidget.addWidget(self.DownloadingLogo)
 
 
-        self.stackedWidget.setCurrentIndex(4)
+
+        self.stackedWidget.setCurrentIndex(6)
         self.MainWindow.setCentralWidget(self.centralwidget)
 
         self.MainWindow.show()
@@ -757,7 +784,7 @@ class Ui:
             font.setFamily("Bebas Neue")
             font.setPointSize(18)
             valueLogo=QtWidgets.QToolButton(self.verticalLayoutWidget)
-            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[0]+")")
+            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
             valueLogo.setFont(font)
             valueLogo.setText(valueLogoText[index])
             valueLogo.setFixedWidth(484)
@@ -794,30 +821,35 @@ class Ui:
         self.scrollArea2.setWidget(self.groupBox2)
 
         valueLogoText2=playlistData
-        
-        image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
-        self.videoBtn=[]
-        self.qPixmapVar = QPixmap()
-        count=0
-        self.videoBtn.clear()
-        
-        print(self.videoBtn)
+
+        self.videoListBtn=[]
+
+        self.videoListBtn.clear()
         print("값:"+str(playlistData))
+        print(len(valueLogoText2))
         for index in range(0,len(valueLogoText2)):
             font = QtGui.QFont()
             font.setFamily("Bebas Neue")
-            font.setPointSize(18)
+            font.setPointSize(9)
             valueLogo2=QtWidgets.QToolButton(self.verticalLayoutVideoWidget2)
-            valueLogo2.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;border-image:url("+image2[0]+")")
+            urlString = valueLogoText2[index][1]
+            imageFromWeb = urllib.request.urlopen(urlString).read()
+            qPixmapVar = QPixmap()
+            qPixmapVar.loadFromData(imageFromWeb)
+            qPixmapVar=qPixmapVar.scaled(162, 90)
+            icon = QIcon() # QIcon 생성
+            icon.addPixmap(qPixmapVar)
+            valueLogo2.setIcon(icon)
+            valueLogo2.setIconSize(QtCore.QSize(162, 90))
+            valueLogo2.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
             valueLogo2.setFont(font)
-            valueLogo2.setText(valueLogoText2[index])
+            valueLogo2.setText(valueLogoText2[index][0])
             valueLogo2.setFixedWidth(162)
             valueLogo2.setFixedHeight(90)
             valueLogo2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-            self.verticalLayoutVideo2.setWidget(count,QtWidgets.QFormLayout.LabelRole,valueLogo2)
-            count+=1
-            self.videoBtn.append(valueLogo2)
-        print(self.videoBtn)
+            self.verticalLayoutVideo2.addWidget(valueLogo2)
+
+            self.videoListBtn.append(valueLogo2)
 
 
 

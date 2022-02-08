@@ -23,9 +23,9 @@ class Database:
         self.column2Value=['id','playList']
         self.row2=['INTEGER PRIMARY KEY','TEXT','TEXT']
 
-        self.column3=['sequance','id','playList','video']
-        self.column3Value=['id','playList','video']
-        self.row3=['INTEGER PRIMARY KEY','TEXT','TEXT','TEXT']
+        self.column3=['sequance','id','playList','video','time','imageURL']
+        self.column3Value=['id','playList','video','time','imageURL']
+        self.row3=['INTEGER PRIMARY KEY','TEXT','TEXT','TEXT','INT','TEXT']
 
 
         self.cursor1=self.connect1.cursor()

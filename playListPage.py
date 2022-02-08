@@ -3,15 +3,19 @@ import VideoPage
 from PyQt5 import QtWidgets
 import data
 import loadingPage
+import pafy
+import videoLoading
 
 class PlayList:
     def __init__(self,Ui,con):
         self.ui=Ui
         self.con=con
         self.load=loadingPage.Loading(self.ui)
+        self.Videoload=videoLoading.LoadingVideo(self.ui)
+        self.video=VideoPage.Video(self.ui)
+
         self.db=data.Database()
         self.ui.playListBack.clicked.connect(self.backEvent)
-        
         for index in range(0,len(self.ui.playListBtnList)):
             self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
         self.dialog=QtWidgets.QDialog()
@@ -65,9 +69,15 @@ class PlayList:
             self.playListText.append(listData[index][2])
         self.ui.playList(self.playListText)
 
+
     def moveEvent(self,number):
         self.load.setMovie(4)
-        self.video=VideoPage.Video(self.ui,self.id,self.playListText[number])
+        self.video.id=self.id
+        self.video.playList=self.playListText[number]
+        self.video.videoPlay(0)
+        self.presentList=self.playListText[number]
+        self.video.videoListSet()
+  
 
 
 
@@ -176,16 +186,18 @@ class PlayList:
 
     def insertVideo(self,number):
         playList=self.ui.dialogListBox[number].text()
-        listData=[self.id,playList,self.ui.dialogText.text()]
-        checkPlayListRepeat=self.db.readData("playVideo",["id","playList","video"],listData,self.db.cursor3)
+        videoData=self.storeVideo(self.ui.dialogText.text())
+        listData=[self.id,playList,videoData[0],videoData[1],videoData[2]]
+        print(listData)
+        checkPlayListRepeat=self.db.readData("playVideo",["id","playList","video","time","imageURL"],listData,self.db.cursor3)
         print(len(checkPlayListRepeat))
         if len(checkPlayListRepeat)==0:
-            self.presentList=self.ui.dialogText.text()
-            self.db.insertData("playVideo",self.db.column3Value,listData,self.db.cursor3,self.db.connect3)
             self.dialog2.close()
             self.dialog.close()
-            self.playVideoListSet()
+            self.presentList=playList
+            self.db.insertData("playVideo",self.db.column3Value,listData,self.db.cursor3,self.db.connect3)
             self.playListClick()
+            self.Videoload.setDown(self.best)
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
@@ -214,10 +226,26 @@ class PlayList:
             self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.insertVideo(indexState))
             self.dialog2.exec()
 
-    def playVideoListSet(self):
-        listData=self.db.readData("playVideo",["id","playList"],[self.id,self.presentList],self.db.cursor3)
-        self.playVideoText=[]
-        for index in range (0,len(listData)):
-            self.playVideoText.append(listData[index][3])
-        self.ui.playVideoSet(self.playVideoText)
+    
 
+
+    def storeVideo(self,url):
+        try:
+            video = pafy.new(url)
+            streams = video.streams
+            for i in streams:
+                print(i)
+            # get best resolution regardless of format
+            self.best = video.getbest()
+            print(self.best.resolution, self.best.extension)
+            # Download the video
+
+            sec=int(video.duration[0])*36000+int(video.duration[1])*3600+int(video.duration[3])*600+int(video.duration[4])*60+int(video.duration[6])*10+int(video.duration[7])
+            videoName=video.title
+            videoImage = video.thumb
+
+            return videoName,sec,videoImage
+        except:
+            self.ui.dialogCheck(self.dialog,"URL wrong")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
+            self.dialog.exec()

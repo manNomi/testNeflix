@@ -18,7 +18,7 @@ class Loading:
         self.indexNum=num
         self.movie = QMovie("image/넷플릭스.gif", QByteArray())
         self.movie.setCacheMode(QMovie.CacheAll)
-        self.ui.loginLogo.setMovie(self.movie)
+        self.ui.loadingLogo.setMovie(self.movie)
         self.movie.start()
         self.timer.start()
         self.timer.time.connect(self.setTime)
