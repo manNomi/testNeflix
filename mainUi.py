@@ -744,7 +744,7 @@ class Ui:
 
 
 
-    def playList(self,playlistData):
+    def playList(self,playlistData,videoList):
 
 
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -771,24 +771,28 @@ class Ui:
 
         valueLogoText=playlistData
 
-        image2=['image/image1.PNG','image/image2.PNG','image/image3.PNG','image/image4.PNG','image/image5.PNG']
+
         self.mainLogoListBtn=[]
         self.qPixmapVar = QPixmap()
         count=0
         self.mainLogoListBtn.clear()
         
-        print(self.mainLogoListBtn)
-        print("값:"+str(playlistData))
+        print("사진:"+str(videoList))
         for index in range(0,len(valueLogoText)):
             font = QtGui.QFont()
             font.setFamily("Bebas Neue")
-            font.setPointSize(18)
+            font.setPointSize(30)
             valueLogo=QtWidgets.QToolButton(self.verticalLayoutWidget)
-            valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
-            valueLogo.setFont(font)
-            valueLogo.setText(valueLogoText[index])
             valueLogo.setFixedWidth(484)
             valueLogo.setFixedHeight(270)
+            if videoList[index]!="":
+                valueLogo.setStyleSheet("background-image:url(thumbnail/"+videoList[index]+".PNG);background-repeat:no-repeat;background-size:cover; background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+            else:
+                valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+
+            valueLogo.setFont(font)
+            valueLogo.setText(valueLogoText[index])
+            
             valueLogo.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             if (index+2)%2==0:
                 self.verticalLayout.setWidget(count,QtWidgets.QFormLayout.LabelRole,valueLogo)

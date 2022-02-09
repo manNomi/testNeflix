@@ -16,16 +16,22 @@ class Loading:
         self.timer =Loadingtime()
         self.ui.stackedWidget.setCurrentIndex(5)
         self.indexNum=num
-        self.movie = QMovie("image/넷플릭스.gif", QByteArray())
+        if self.indexNum==0:
+            self.movie = QMovie("image/넷플릭스.gif", QByteArray())
+        else:
+            self.movie = QMovie("image/넷플릭스2.gif", QByteArray())
+            self.movie.setScaledSize(QSize(1000,560))
+        self.timer.time.connect(self.setTime)
         self.movie.setCacheMode(QMovie.CacheAll)
         self.ui.loadingLogo.setMovie(self.movie)
         self.movie.start()
         self.timer.start()
-        self.timer.time.connect(self.setTime)
 
     def setTime(self,time):
         if time==3:
             self.ui.stackedWidget.setCurrentIndex(self.indexNum)
+    
+
 
 class Loadingtime(QThread):
     time = pyqtSignal(int)    # 사용자 정의 시그널

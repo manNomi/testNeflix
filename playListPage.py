@@ -1,10 +1,14 @@
 from json import load
+
+from itsdangerous import exc
 import VideoPage
 from PyQt5 import QtWidgets
 import data
 import loadingPage
 import pafy
 import videoLoading
+import urllib.request
+from PyQt5.QtGui import *
 
 class PlayList:
     def __init__(self,Ui,con):
@@ -56,7 +60,6 @@ class PlayList:
             self.db.insertData("playList",self.db.column2Value,listData,self.db.cursor2,self.db.connect2)
             self.dialog2.close()
             self.playListSet()
-            self.playListClick()
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
@@ -64,10 +67,25 @@ class PlayList:
 
     def playListSet(self):
         listData=self.db.readData("playList",["id"],[self.id],self.db.cursor2)
+        
+
         self.playListText=[]
         for index in range (0,len(listData)):
             self.playListText.append(listData[index][2])
-        self.ui.playList(self.playListText)
+
+        self.videoListText=[]
+        for index in range(0,len(listData)):
+            listData2=self.db.readData("playVideo",["id","playList"],[self.id,self.playListText[index]],self.db.cursor3)
+            try:
+                self.videoListText.append(listData2[0][3])
+            except:
+                self.videoListText.append("")
+        print("비디오제목은:"+str(self.videoListText))
+        self.ui.playList(self.playListText,self.videoListText)
+        self.playListClick()
+        
+
+       
 
 
     def moveEvent(self,number):
@@ -78,7 +96,6 @@ class PlayList:
         self.presentList=self.playListText[number]
         self.video.videoListSet()
   
-
 
 
 
@@ -128,7 +145,6 @@ class PlayList:
             self.dialog2.close()
             self.dialog.close()
             self.playListSet()
-            self.playListClick()
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
@@ -171,7 +187,6 @@ class PlayList:
         self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
         self.dialog.close()
         self.dialog4.close()
-        self.playListSet()
         self.playListClick()
 
             # rdData 통해서 id 랑 입력된 text 로 시퀀스 찾아서 그 시퀀스 딜리트 
@@ -197,7 +212,17 @@ class PlayList:
             self.presentList=playList
             self.db.insertData("playVideo",self.db.column3Value,listData,self.db.cursor3,self.db.connect3)
             self.playListClick()
+
+
+            qPixmapVar = QPixmap()
+            urlString = videoData[2]
+            imageFromWeb = urllib.request.urlopen(urlString).read()
+            qPixmapVar.loadFromData(imageFromWeb)
+            qPixmapVar.save("thumbnail/"+videoData[0]+".PNG")
+
+
             self.Videoload.setDown(self.best)
+            self.playListSet()
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
             self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
