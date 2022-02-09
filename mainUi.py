@@ -786,7 +786,7 @@ class Ui:
             valueLogo.setFixedWidth(484)
             valueLogo.setFixedHeight(270)
             if videoList[index]!="":
-                valueLogo.setStyleSheet("background-image:url(thumbnail/"+videoList[index]+".PNG);background-repeat:no-repeat;background-size:cover; background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
+                valueLogo.setStyleSheet("background-image:url(thumbnail/"+videoList[index]+".PNG) center/ 484px 270px no-repeat !important;background-repeat:no-repeat; background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
             else:
                 valueLogo.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
 

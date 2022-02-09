@@ -184,10 +184,24 @@ class PlayList:
         playList=self.ui.dialogListBox[number].text()
         data=self.db.readData("playList",["id","playList"],[self.id,playList],self.db.cursor2)
         deleteData=["sequance",data[0][0]]
-        self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
-        self.dialog.close()
-        self.dialog4.close()
-        self.playListClick()
+        data=self.db.readData("playVideo",["id","playList"],[self.id,playList],self.db.cursor3)
+        try:
+            deleteData2=["sequance",data[0][0]]
+            self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
+            self.db.deleteData("playVideo",deleteData2,self.db.cursor3,self.db.connect3)
+            self.dialog.close()
+            self.dialog4.close()
+            self.playListClick()
+            self.playListSet()
+        except:
+            self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
+            self.dialog.close()
+            self.dialog4.close()
+            self.playListClick()
+            self.playListSet()
+
+
+        
 
             # rdData 통해서 id 랑 입력된 text 로 시퀀스 찾아서 그 시퀀스 딜리트 
 
@@ -202,32 +216,35 @@ class PlayList:
     def insertVideo(self,number):
         playList=self.ui.dialogListBox[number].text()
         videoData=self.storeVideo(self.ui.dialogText.text())
-        listData=[self.id,playList,videoData[0],videoData[1],videoData[2]]
-        print(listData)
-        checkPlayListRepeat=self.db.readData("playVideo",["id","playList","video","time","imageURL"],listData,self.db.cursor3)
-        print(len(checkPlayListRepeat))
-        if len(checkPlayListRepeat)==0:
-            self.dialog2.close()
-            self.dialog.close()
-            self.presentList=playList
-            self.db.insertData("playVideo",self.db.column3Value,listData,self.db.cursor3,self.db.connect3)
-            self.playListClick()
+        try:
+            listData=[self.id,playList,videoData[0],videoData[1],videoData[2]]
+            print(listData)
+            checkPlayListRepeat=self.db.readData("playVideo",["id","playList","video","time","imageURL"],listData,self.db.cursor3)
+            print(len(checkPlayListRepeat))
+            if len(checkPlayListRepeat)==0:
+                self.dialog2.close()
+                self.dialog.close()
+                self.presentList=playList
+                self.db.insertData("playVideo",self.db.column3Value,listData,self.db.cursor3,self.db.connect3)
+                self.playListClick()
+                qPixmapVar = QPixmap()
+                urlString = videoData[2]
+                imageFromWeb = urllib.request.urlopen(urlString).read()
+                qPixmapVar.loadFromData(imageFromWeb)
+                qPixmapVar=qPixmapVar.scaled(484,270)
+                qPixmapVar.save("thumbnail/"+videoData[0]+".PNG")
 
 
-            qPixmapVar = QPixmap()
-            urlString = videoData[2]
-            imageFromWeb = urllib.request.urlopen(urlString).read()
-            qPixmapVar.loadFromData(imageFromWeb)
-            qPixmapVar.save("thumbnail/"+videoData[0]+".PNG")
-
-
-            self.Videoload.setDown(self.best)
-            self.playListSet()
-        else:
-            self.ui.dialogCheck(self.dialog3,"repeat")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
-            self.dialog3.exec()
-
+                self.Videoload.setDown(self.best)
+                self.playListSet()
+            else:
+                self.ui.dialogCheck(self.dialog3,"repeat")
+                self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+                self.dialog3.exec()
+        except:
+            self.ui.dialogCheck(self.dialog,"URL wrong")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
+            self.dialog.exec()
 
     def videoInsertEvent(self):
         state=[]
@@ -267,7 +284,7 @@ class PlayList:
 
             sec=int(video.duration[0])*36000+int(video.duration[1])*3600+int(video.duration[3])*600+int(video.duration[4])*60+int(video.duration[6])*10+int(video.duration[7])
             videoName=video.title
-            videoImage = video.thumb
+            videoImage = video.bigthumb
 
             return videoName,sec,videoImage
         except:

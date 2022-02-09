@@ -28,9 +28,8 @@ class Loading:
         self.timer.start()
 
     def setTime(self,time):
-        if time==3:
+        if time==4:
             self.ui.stackedWidget.setCurrentIndex(self.indexNum)
-    
 
 
 class Loadingtime(QThread):
@@ -49,10 +48,3 @@ class Loadingtime(QThread):
             if self.num>4:
                 break
     
-
-if __name__=="__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    Main=Loading()
-    Main.MainWindow.show()
-    Main.movie.start()
-    sys.exit(app.exec_())

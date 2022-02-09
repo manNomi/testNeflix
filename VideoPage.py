@@ -2,6 +2,7 @@ import data
 import vlc
 from PyQt5.QtCore import *
 from PyQt5 import QtWidgets
+import time
 
 class Video:
     def __init__(self,Ui):
@@ -114,10 +115,14 @@ class PlayVideo:
     
     def btnEvent(self,num):
         self.play.PlayPause(num)
+        if num==1:
+            self.ui.videoName.setText("")
+
 
     def playEvent(self):
         try:
             self.play.playStop()
+            self.ui.videoName.setText("")
         except:
             pass
 
@@ -137,7 +142,9 @@ class PlayVideo:
             self.mp.set_media(media)
             self.play=Play(self.mp,listData[num][4])
             self.play.start()
-        except:pass
+        except:
+            self.ui.videoName.setText("LOADING....")
+
 
 class Play(QThread):
     time = pyqtSignal(int)    # 사용자 정의 시그널
@@ -156,6 +163,7 @@ class Play(QThread):
 
     def playStop(self):
         self.playVideo.stop()
+        
 
     def PlayPause(self,num):
         if num==0:
@@ -163,6 +171,7 @@ class Play(QThread):
                 self.playVideo.play()
         elif num==1:
             self.playVideo.stop()
+
         else:
             if self.playVideo.is_playing():
                 self.playVideo.pause()
