@@ -43,7 +43,7 @@ class Join:
                 self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
                 self.dialog.exec()
             #Join
-        
+
 
     def joinCheck(self,num):
         self.id=self.ui.joinTextList[0].text()

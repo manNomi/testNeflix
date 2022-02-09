@@ -17,20 +17,22 @@ class PlayList:
         self.load=loadingPage.Loading(self.ui)
         self.Videoload=videoLoading.LoadingVideo(self.ui)
         self.video=VideoPage.Video(self.ui)
-
         self.db=data.Database()
-        self.ui.playListBack.clicked.connect(self.backEvent)
-        for index in range(0,len(self.ui.playListBtnList)):
-            self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
-        self.dialog=QtWidgets.QDialog()
-        self.dialog2=QtWidgets.QDialog()
-        self.dialog3=QtWidgets.QDialog()
-        self.dialog4=QtWidgets.QDialog()
+        self.dialog=QtWidgets.QDialog()     # dialog check edit
+        self.dialog2=QtWidgets.QDialog()    # dialogPlayList
+        self.dialog3=QtWidgets.QDialog()    # dialog check 
+        self.dialog4=QtWidgets.QDialog()    # dialogYesNo
         self.id=None
         self.playListText=[]
         self.playList=[]
         self.playListClick()
+        self.playListbtnEvent()
 
+
+    def playListbtnEvent(self):
+        self.ui.playListBack.clicked.connect(self.backEvent)
+        for index in range(0,len(self.ui.playListBtnList)):
+            self.ui.playListBtnList[index].clicked.connect(lambda event,value=index : self.playListEvent(value))
     def receiveId(self,id):
         self.id=id        
         self.playListClick()
@@ -46,9 +48,9 @@ class PlayList:
         elif number==1:
             self.updateList()
         elif number==2:
-            self.ui.dialogCheckEdit(self.dialog2,"insert")
+            self.ui.dialogCheckEdit(self.dialog,"insert")
             self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.insertPlayList())
-            self.dialog2.exec()
+            self.dialog.exec()
         else:
             self.deleteList()
 
@@ -58,7 +60,7 @@ class PlayList:
         print(len(checkPlayListRepeat))
         if len(checkPlayListRepeat)==0:
             self.db.insertData("playList",self.db.column2Value,listData,self.db.cursor2,self.db.connect2)
-            self.dialog2.close()
+            self.dialog.close()
             self.playListSet()
         else:
             self.ui.dialogCheck(self.dialog3,"repeat")
@@ -67,8 +69,6 @@ class PlayList:
 
     def playListSet(self):
         listData=self.db.readData("playList",["id"],[self.id],self.db.cursor2)
-        
-
         self.playListText=[]
         for index in range (0,len(listData)):
             self.playListText.append(listData[index][2])
@@ -104,10 +104,10 @@ class PlayList:
         self.con.setTextClear()
 
     def updateList(self):
-        self.ui.dialogPlayList(self.dialog,"update",self.playListText)
-        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog.close())
+        self.ui.dialogPlayList(self.dialog2,"update",self.playListText)
+        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog2.close())
         self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.updateName())
-        self.dialog.exec()
+        self.dialog2.exec()
 
 
     def updateName(self):
@@ -120,17 +120,17 @@ class PlayList:
                 count+=1
                 indexState=index
         if count>=2 :
-            self.ui.dialogCheck(self.dialog2,"repeat input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"repeat input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count<=0 :
-            self.ui.dialogCheck(self.dialog2,"pls input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"pls input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count==1:   
-            self.ui.dialogCheckEdit(self.dialog2,"update")
+            self.ui.dialogCheckEdit(self.dialog,"update")
             self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.updateData(indexState))
-            self.dialog2.exec()
+            self.dialog.exec()
 
 
     def updateData(self,number):
@@ -151,10 +151,10 @@ class PlayList:
             self.dialog3.exec()
 
     def deleteList(self):
-        self.ui.dialogPlayList(self.dialog,"delete",self.playListText)
-        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog.close())
+        self.ui.dialogPlayList(self.dialog2,"delete",self.playListText)
+        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog2.close())
         self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.deleteEvent())
-        self.dialog.exec()
+        self.dialog2.exec()
 
     def deleteEvent(self):
         state=[]
@@ -166,13 +166,13 @@ class PlayList:
                 count+=1
                 indexState=index
         if count>=2 :
-            self.ui.dialogCheck(self.dialog2,"repeat input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"repeat input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count<=0 :
-            self.ui.dialogCheck(self.dialog2,"pls input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"pls input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count==1:   
             self.ui.dialogYesNo(self.dialog4,"delete?")
             self.ui.dialogYesNoBtn[0].clicked.connect(lambda event : self.deleteData(indexState))
@@ -189,14 +189,14 @@ class PlayList:
             deleteData2=["sequance",data[0][0]]
             self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
             self.db.deleteData("playVideo",deleteData2,self.db.cursor3,self.db.connect3)
-            self.dialog.close()
             self.dialog4.close()
+            self.dialog2.close()
             self.playListClick()
             self.playListSet()
         except:
             self.db.deleteData("playList",deleteData,self.db.cursor2,self.db.connect2)
-            self.dialog.close()
             self.dialog4.close()
+            self.dialog2.close()
             self.playListClick()
             self.playListSet()
 
@@ -207,10 +207,10 @@ class PlayList:
 
 
     def searchList(self):
-        self.ui.dialogPlayList(self.dialog,"search",self.playListText)
-        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog.close())
+        self.ui.dialogPlayList(self.dialog2,"search",self.playListText)
+        self.ui.Listcheckbtn[1].clicked.connect(lambda event : self.dialog2.close())
         self.ui.Listcheckbtn[0].clicked.connect(lambda event : self.videoInsertEvent())
-        self.dialog.exec()
+        self.dialog2.exec()
 
 
     def insertVideo(self,number):
@@ -231,9 +231,8 @@ class PlayList:
                 urlString = videoData[2]
                 imageFromWeb = urllib.request.urlopen(urlString).read()
                 qPixmapVar.loadFromData(imageFromWeb)
-                qPixmapVar=qPixmapVar.scaled(484,270)
+                qPixmapVar=qPixmapVar.scaled(480,270)
                 qPixmapVar.save("thumbnail/"+videoData[0]+".PNG")
-
 
                 self.Videoload.setDown(self.best)
                 self.playListSet()
@@ -242,9 +241,9 @@ class PlayList:
                 self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
                 self.dialog3.exec()
         except:
-            self.ui.dialogCheck(self.dialog,"URL wrong")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
-            self.dialog.exec()
+            self.ui.dialogCheck(self.dialog3,"URL wrong")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
 
     def videoInsertEvent(self):
         state=[]
@@ -256,17 +255,17 @@ class PlayList:
                 count+=1
                 indexState=index
         if count>=2 :
-            self.ui.dialogCheck(self.dialog2,"repeat input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"repeat input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count<=0 :
-            self.ui.dialogCheck(self.dialog2,"pls input")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog2.close())
-            self.dialog2.exec()
+            self.ui.dialogCheck(self.dialog3,"pls input")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()
         elif count==1:   
-            self.ui.dialogCheckEdit(self.dialog2,"Insert Video")
+            self.ui.dialogCheckEdit(self.dialog,"Insert Video")
             self.ui.dialogCheckEditBtn.clicked.connect(lambda event : self.insertVideo(indexState))
-            self.dialog2.exec()
+            self.dialog.exec()
 
     
 
@@ -288,6 +287,6 @@ class PlayList:
 
             return videoName,sec,videoImage
         except:
-            self.ui.dialogCheck(self.dialog,"URL wrong")
-            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog.close())
-            self.dialog.exec()
+            self.ui.dialogCheck(self.dialog3,"URL wrong")
+            self.ui.dialogCheckbtn.clicked.connect(lambda event : self.dialog3.close())
+            self.dialog3.exec()

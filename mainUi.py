@@ -783,7 +783,7 @@ class Ui:
             font.setFamily("Bebas Neue")
             font.setPointSize(30)
             valueLogo=QtWidgets.QToolButton(self.verticalLayoutWidget)
-            valueLogo.setFixedWidth(484)
+            valueLogo.setFixedWidth(480)
             valueLogo.setFixedHeight(270)
             if videoList[index]!="":
                 valueLogo.setStyleSheet("background-image:url(thumbnail/"+videoList[index]+".PNG) center/ 484px 270px no-repeat !important;background-repeat:no-repeat; background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white;")
