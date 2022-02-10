@@ -543,6 +543,12 @@ class Ui:
         self.videoDeleteBtn.setText("delete")
         self.videoDeleteBtn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
+        self.horizontalSlider2 = QtWidgets.QProgressBar(self.PageVideo)
+        self.horizontalSlider2.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider2.setGeometry(130, 700, 700, 22)
+        self.horizontalSlider2.setStyleSheet("color:red")
+        self.horizontalSlider2.setObjectName("horizontalSlider2")
+
 
 #############################################################################################################
         self.PageLoading = QtWidgets.QWidget()

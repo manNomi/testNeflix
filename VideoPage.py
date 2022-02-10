@@ -20,8 +20,11 @@ class Video:
         self.videoListSet()
         
         self.ui.horizontalSlider.valueChanged.connect(self.volumeEvent)
+        self.ui.horizontalSlider2.valueChanged.connect(self.progressBar)
 
         self.ui.videoDeleteBtn.clicked.connect(self.deleteList)
+
+        self.sec=0
        
 
 
@@ -106,6 +109,9 @@ class Video:
         listData=self.db.readData("playVideo",["id","playList"],[self.id,self.playList],self.db.cursor3)
         print("listData="+str(listData))
         self.play.setVideoPlay(listData,num)
+
+    def progressBar(self):
+        pass
     
 
 class PlayVideo:
@@ -123,6 +129,7 @@ class PlayVideo:
         try:
             self.play.playStop()
             self.ui.videoName.setText("")
+            self.timer.timerSet()
         except:
             pass
 
@@ -131,6 +138,7 @@ class PlayVideo:
 
     def setVideoPlay(self,listData,num):
         try:
+            self.sec=listData[num][4]
             self.mp = self.instance.media_player_new()
             self.mp.set_hwnd(int(self.ui.videoPlay.winId()))
             print(self.ui.videoPlay.winId())
@@ -140,19 +148,34 @@ class PlayVideo:
             media = self.instance.media_new(mf)
             media.get_mrl()
             self.mp.set_media(media)
-            self.play=Play(self.mp,listData[num][4])
+
+            self.play=Play(self.mp)
             self.play.start()
+            
+            self.progressbarSet(listData[num][4])
+           
         except:
             self.ui.videoName.setText("LOADING....")
 
+    def progressBarEvnet(self,num):
+        self.ui.horizontalSlider2.setValue(num);
+        print(num)
+    
+    def progressbarSet(self,time):
+        self.timer=Timer(time)
+        self.ui.horizontalSlider2.setMaximum(time)
+        self.ui.horizontalSlider2.setValue(0);
+        self.timer.time.connect(self.progressBarEvnet)
+        self.timer.start()
+
 
 class Play(QThread):
-    time = pyqtSignal(int)    # 사용자 정의 시그널
+    playvideo = pyqtSignal(int)  
 
-    def __init__(self,play,sec):
+    def __init__(self,play):
         super().__init__()
-        self.time=sec
         self.playVideo=play
+        self.timer=0
         
     def changeVolume(self, Volume):
         self.playVideo.audio_set_volume(100-Volume)
@@ -160,11 +183,11 @@ class Play(QThread):
     def run(self):
         print("시작")
         self.playVideo.play()
-
+        
     def playStop(self):
         self.playVideo.stop()
         
-
+        
     def PlayPause(self,num):
         if num==0:
             if self.playVideo.is_playing()==False:
@@ -177,3 +200,22 @@ class Play(QThread):
                 self.playVideo.pause()
 
     
+class Timer(QThread):
+    time = pyqtSignal(int)    # 사용자 정의 시그널
+
+    def __init__(self,sec):
+        super().__init__()
+        self.total=sec
+        self.timer=0
+        self.timerCheck=True
+    def run(self):
+        while self.timerCheck:
+            self.time.emit(self.timer)
+            time.sleep(1)
+            self.timer+=1
+            if self.total<=self.timer:
+                self.timerCheck=False
+        
+    def timerSet(self):
+        self.timerCheck=False
+        self.timer=0
