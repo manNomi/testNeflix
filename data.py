@@ -27,7 +27,6 @@ class Database:
         self.column3Value=['id','playList','video','time','imageURL']
         self.row3=['INTEGER PRIMARY KEY','TEXT','TEXT','TEXT','INT','TEXT']
 
-
         self.cursor1=self.connect1.cursor()
         self.cursor2=self.connect2.cursor()
         self.cursor3=self.connect3.cursor()

@@ -20,7 +20,6 @@ class Video:
         self.videoListSet()
         
         self.ui.horizontalSlider.valueChanged.connect(self.volumeEvent)
-        self.ui.horizontalSlider2.valueChanged.connect(self.progressBar)
 
         self.ui.videoDeleteBtn.clicked.connect(self.deleteList)
 
@@ -110,8 +109,7 @@ class Video:
         print("listData="+str(listData))
         self.play.setVideoPlay(listData,num)
 
-    def progressBar(self):
-        pass
+
     
 
 class PlayVideo:
@@ -121,9 +119,13 @@ class PlayVideo:
     
     def btnEvent(self,num):
         self.play.PlayPause(num)
-        if num==1:
+        if num==0:
+            self.timer.timeRestart()
+        elif num==1:
             self.ui.videoName.setText("")
-
+            self.timer.timerSet()
+        else :
+            self.timer.timerStop()
 
     def playEvent(self):
         try:
@@ -144,11 +146,9 @@ class PlayVideo:
             print(self.ui.videoPlay.winId())
             mf="videos/"+str(listData[num][3])+".mp4"
             self.ui.videoName.setText(str(listData[num][3]))
-            print(mf)
             media = self.instance.media_new(mf)
             media.get_mrl()
             self.mp.set_media(media)
-
             self.play=Play(self.mp)
             self.play.start()
             
@@ -159,7 +159,7 @@ class PlayVideo:
 
     def progressBarEvnet(self,num):
         self.ui.horizontalSlider2.setValue(num);
-        print(num)
+      
     
     def progressbarSet(self,time):
         self.timer=Timer(time)
@@ -187,14 +187,12 @@ class Play(QThread):
     def playStop(self):
         self.playVideo.stop()
         
-        
     def PlayPause(self,num):
         if num==0:
             if self.playVideo.is_playing()==False:
                 self.playVideo.play()
         elif num==1:
             self.playVideo.stop()
-
         else:
             if self.playVideo.is_playing():
                 self.playVideo.pause()
@@ -208,14 +206,24 @@ class Timer(QThread):
         self.total=sec
         self.timer=0
         self.timerCheck=True
+        self.timeStop=False
     def run(self):
         while self.timerCheck:
-            self.time.emit(self.timer)
-            time.sleep(1)
-            self.timer+=1
+            if self.timeStop!=True:
+                self.time.emit(self.timer)
+                time.sleep(1)
+                self.timer+=1
             if self.total<=self.timer:
                 self.timerCheck=False
         
     def timerSet(self):
         self.timerCheck=False
         self.timer=0
+
+    def timerStop(self):
+       self.timeStop=True
+    
+    def timeRestart(self):
+       self.timeStop=False
+
+        

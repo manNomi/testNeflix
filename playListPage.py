@@ -1,5 +1,4 @@
 from json import load
-
 from itsdangerous import exc
 import VideoPage
 from PyQt5 import QtWidgets
@@ -233,7 +232,6 @@ class PlayList:
                 qPixmapVar.loadFromData(imageFromWeb)
                 qPixmapVar=qPixmapVar.scaled(480,270)
                 qPixmapVar.save("thumbnail/"+videoData[0]+".PNG")
-
                 self.Videoload.setDown(self.best)
                 self.playListSet()
             else:
