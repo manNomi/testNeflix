@@ -20,7 +20,7 @@ class Login:
         self.loginClick()
         self.dialog=QtWidgets.QDialog()
         self.join=joinPage.Join(self.ui,self.con)
-        self.find=findPage.Find(self.ui,self.con)
+        self.find=findPage.Find(self.ui,self.con)#None이 되어야함 위아래 모두 
         self.playList=playListPage.PlayList(self.ui,self.con)
 
     def loginClick(self):  # initEvent 

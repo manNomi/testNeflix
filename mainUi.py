@@ -30,7 +30,7 @@ class Ui:
 
         self.PageLogin = QtWidgets.QWidget()
         self.PageLogin.setObjectName("PageLogin")
-
+        
         loginLineXY=[[480,20,370,100],[180,180,950,650]]
         self.loginLineList=[]
         for index in range(0,len(loginLineXY)):
@@ -732,7 +732,7 @@ class Ui:
         self.dialogText.setFont(font)
         self.dialogText.setStyleSheet("background-color:black ; border-style: solid; border-color : white; border-width: 1px;color:white")
         self.dialogText.setObjectName("label")
- 
+
         self.dialogCheckEditBtn=QtWidgets.QToolButton(Dialog)
         self.dialogCheckEditBtn.setGeometry(215,280,120,60)
         font = QtGui.QFont()
@@ -748,11 +748,7 @@ class Ui:
 #             self.Dialog.show()
 
 
-
-
     def playList(self,playlistData,videoList):
-
-
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(0, 0, 188, 119)
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")

@@ -12,20 +12,22 @@ from PyQt5.QtGui import *
 class PlayList:
     def __init__(self,Ui,con):
         self.ui=Ui
-        self.con=con
+        self.con=con # 굳이 매개변수로 할필요 없었다 
+
         self.load=loadingPage.Loading(self.ui)
         self.Videoload=videoLoading.LoadingVideo(self.ui)
-        self.video=VideoPage.Video(self.ui)
+        self.video=VideoPage.Video(self.ui)  # None 으로 해놓고 객체를 삭제하는 방법을 찾아야했다 
+
         self.db=data.Database()
-        self.dialog=QtWidgets.QDialog()     # dialog check edit
+        self.dialog=QtWidgets.QDialog()     # dialog checkedit
         self.dialog2=QtWidgets.QDialog()    # dialogPlayList
         self.dialog3=QtWidgets.QDialog()    # dialog check 
         self.dialog4=QtWidgets.QDialog()    # dialogYesNo
         self.id=None
         self.playListText=[]
         self.playList=[]
-        self.playListClick()
-        self.playListbtnEvent()
+        self.playListClick()# 이름 
+        self.playListbtnEvent() # control 버튼 이름 이름이 너무 비슷해서 유지보수가 힘들다 
 
 
     def playListbtnEvent(self):
@@ -88,6 +90,7 @@ class PlayList:
 
 
     def moveEvent(self,number):
+        #비디오 객체 선언
         self.load.setMovie(4)
         self.video.id=self.id
         self.video.playList=self.playListText[number]
@@ -101,6 +104,9 @@ class PlayList:
     def backEvent(self):
         self.ui.stackedWidget.setCurrentIndex(0)
         self.con.setTextClear()
+        #객체 삭제 
+        # event 버튼 등등 모두 clear 
+
 
     def updateList(self):
         self.ui.dialogPlayList(self.dialog2,"update",self.playListText)
@@ -198,9 +204,6 @@ class PlayList:
             self.dialog2.close()
             self.playListClick()
             self.playListSet()
-
-
-        
 
             # rdData 통해서 id 랑 입력된 text 로 시퀀스 찾아서 그 시퀀스 딜리트 
 

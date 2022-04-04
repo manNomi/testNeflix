@@ -216,7 +216,7 @@ class Timer(QThread):
             if self.total<=self.timer:
                 self.timerCheck=False
         
-    def timerSet(self):
+    def timerSet(self): # 이름 init 과 같은 이름이 좀더 어울린다 수정 
         self.timerCheck=False
         self.timer=0
 

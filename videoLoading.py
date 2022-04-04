@@ -10,7 +10,7 @@ class LoadingVideo:
         self.timer.start()
 
 
-class Download(QThread):
+class Download(QThread):  
     time = pyqtSignal(int)    # 사용자 정의 시그널
 
     def __init__(self,download):
